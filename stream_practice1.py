@@ -5,6 +5,8 @@ import pandas as pd
 #画像
 from PIL import Image
 
+#プログレスバー
+import time
 
 st.title("streamlit/超入門")
 
@@ -62,11 +64,54 @@ df=pd.DataFrame(
 st.map(df)
 
 st.write("Display Image")
-#画像読み込み
-img=Image.open(r"C:\Users\81701\Pictures\Camera Roll\AUS\S__39600159_0.jpg")
-st.image(img,caption="landscape",use_column_width=True)
-#use_column_widthは画像の幅を画面いっぱいにするオプション
+
+if st.checkbox("Show Image"):
+    img=Image.open("landscape.jpg")
+    st.image(img,caption="Bondi Beach",use_column_width=True)
+    #use_column_widthは画像の幅を画面いっぱいにするオプション
+
+    #画像読み込み
+    img=Image.open(r"C:\Users\81701\Pictures\Camera Roll\AUS\S__39600159_0.jpg")
+    st.image(img,caption="landscape",use_column_width=True)
+    #use_column_widthは画像の幅を画面いっぱいにするオプション
 
 st.latex(r'''
          a^2+b^2=c^2
 ''' )
+
+st.badge("インタラクティブなウィジェット")
+
+
+option= st.sidebar.selectbox("年代を教えて",
+                    list(range(10,100,10)))
+
+st.write("あなたは",option,"代ですね")
+
+text=st.text_input("name?")
+"your name is ",text
+score =st.slider("how's your score?",0,100,50)#50はデフォの値
+"condition: ", score
+
+left_column, right_column=st.columns(2)
+button=left_column.button("右に文字を表示")
+if button:
+    right_column.write("this is right column")
+
+expander=st.expander("問い合わせ")
+expander.write("Q&A")
+expander.write("よくあるQ&A")
+expander.write("Q&A")
+
+st.badge("プログレスバー"  )
+"Start!!"
+
+
+latest_iteration=st.empty()
+bar=st.progress(0)
+
+for i in range(100):
+    latest_iteration.text(f"Iteration {i+1}")
+    bar.progress(i+1)
+    time.sleep(0.1)
+
+"done!!"
